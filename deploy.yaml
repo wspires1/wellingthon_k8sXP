@@ -1,0 +1,57 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: 2018-04-01T16:47:54Z
+  generation: 1
+  labels:
+    run: nginx
+  name: nginx
+  namespace: default
+  resourceVersion: "1430"
+  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/nginx
+  uid: d4948e9b-373b-11e8-b911-42010a8000ad
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      run: nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: nginx
+        app: wellingthon-ngnix
+        ambiente: prod
+        dc: UK
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: Always
+        name: nginx
+        volumeMounts:
+        - name: nfs-vol
+          mountPath: /usr/share/nginx/html
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      volumes:
+        - name: nfs-vol
+          persistentVolumeClaim:
+            claimName: wellingthon-pvc
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      nodeSelector:
+         dc: UK
