@@ -1,0 +1,16 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: meu-vol
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 150M
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /home/wellingthon/exercicio
+    server: 10.128.0.2
+    readOnly: false
